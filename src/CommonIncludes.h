@@ -21,9 +21,11 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #define COMMON_INCLUDES_H
 
 #include <algorithm>
+#include <array>
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <numeric>
 #include <queue>
 #include <set>
 #include <sstream>

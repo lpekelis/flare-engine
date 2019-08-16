@@ -55,6 +55,7 @@ private:
 	Image *background_image;
 	std::string background_filename;
 	std::vector<std::string> background_list;
+	std::string prev_game_state_str;
 
 	Timer fps_update;
 	float last_fps;
@@ -73,8 +74,8 @@ public:
 	void render();
 	void showFPS(float fps);
 	void saveUserSettings();
+	void logGameState(char * fname);
 	bool done;
 };
 
 #endif
-

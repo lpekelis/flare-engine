@@ -6,6 +6,8 @@ Set (VERSION "1.09.01")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
+set (CMAKE_CXX_STANDARD 11)
+
 # Default definitions
 if (NOT MSVC)
   set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wunused -Wshadow -Woverloaded-virtual -Wunreachable-code -Wconversion -Wno-sign-conversion -Wformat-security ${CMAKE_CXX_FLAGS}")
@@ -90,11 +92,20 @@ Else (NOT SDL2TTF_FOUND)
 	INCLUDE_DIRECTORIES(${SDL2TTF_INCLUDE_DIR})
 EndIf (NOT SDL2TTF_FOUND)
 
+# Find TensorFlow
+# Find_Package(tensorflow)
+# If (NOT TENSORFLOW_FOUND)
+# 	Message (FATAL_ERROR "Couldn't find tensorflow development files.")
+# Else (NOT TENSORFLOW_FOUND)
+# 	INCLUDE_DIRECTORIES(${TENSORFLOW_INCLUDE_DIR})
+# EndIf (NOT TENSORFLOW_FOUND)
+LINK_DIRECTORIES(/usr/local/include /usr/local/lib)
 
 # Sources
 
 Set (FLARE_SOURCES
 	./src/BehaviorAlly.cpp
+	./src/BehaviorTF.cpp
 	./src/Entity.cpp
 	./src/Animation.cpp
 	./src/AnimationManager.cpp
@@ -181,6 +192,7 @@ Set (FLARE_SOURCES
 	./src/StatBlock.cpp
 	./src/Stats.cpp
 	./src/Subtitles.cpp
+	./src/TensorFlowInterface.cpp
 	./src/TileSet.cpp
 	./src/TooltipData.cpp
 	./src/TooltipManager.cpp
@@ -208,6 +220,7 @@ Set (FLARE_SOURCES
 
 Set (FLARE_HEADERS
 	./src/BehaviorAlly.h
+	./src/BehaviorTF.h
 	./src/Entity.h
 	./src/Animation.h
 	./src/AnimationManager.h
@@ -294,6 +307,7 @@ Set (FLARE_HEADERS
 	./src/Stats.h
 	./src/SoundManager.h
 	./src/Subtitles.h
+	./src/TensorFlowInterface.h
 	./src/TileSet.h
 	./src/TooltipData.h
 	./src/TooltipManager.h
@@ -334,7 +348,7 @@ If (NOT SDL2MAIN_LIBRARY)
   Set (SDL2MAIN_LIBRARY "")
 EndIf (NOT SDL2MAIN_LIBRARY)
 
-Target_Link_Libraries (flare ${CMAKE_LD_FLAGS} ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2MIXER_LIBRARY} ${SDL2TTF_LIBRARY} ${SDL2MAIN_LIBRARY})
+Target_Link_Libraries (flare ${CMAKE_LD_FLAGS} ${SDL2_LIBRARY} ${SDL2IMAGE_LIBRARY} ${SDL2MIXER_LIBRARY} ${SDL2TTF_LIBRARY} ${SDL2MAIN_LIBRARY} tensorflow)
 
 
 # installing to the proper places

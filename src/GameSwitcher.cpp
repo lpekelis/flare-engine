@@ -32,6 +32,9 @@ FLARE.  If not, see http://www.gnu.org/licenses/
  * - maybe full-video cutscenes
  */
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 #include "CursorManager.h"
 #include "FileParser.h"
 #include "FontEngine.h"
@@ -296,6 +299,38 @@ void GameSwitcher::saveUserSettings() {
 		settings->saveSettings();
 }
 
+/**
+ * Serialize game state to JSON file
+ */
+void GameSwitcher::logGameState(char * fname) {
+	if (currentState) {
+
+		std::map<std::string, std::string> game_state_log = currentState->logGameState();
+
+		if (!game_state_log.empty()) {
+
+			json game_state_json(game_state_log);
+			std::string game_state_str = game_state_json.dump();
+
+			if (game_state_str != prev_game_state_str) {
+				std::ofstream outfile;
+				outfile.open(fname, std::ios::out | std::ios::app);
+
+				if (outfile.is_open()) {
+
+					outfile << game_state_str;
+					outfile << "\n";
+
+					if (outfile.bad()) logError("GameSwitcher: Unable to write state log file. No write access or disk is full!");
+					outfile.close();
+					outfile.clear();
+				}
+				prev_game_state_str = game_state_str;
+			}
+		}
+	}
+}
+
 GameSwitcher::~GameSwitcher() {
 	delete currentState;
 	delete label_fps;
@@ -303,4 +338,3 @@ GameSwitcher::~GameSwitcher() {
 	freeBackground();
 	background_list.clear();
 }
-

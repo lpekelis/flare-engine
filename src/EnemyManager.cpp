@@ -40,6 +40,8 @@ FLARE.  If not, see http://www.gnu.org/licenses/
 #include "SharedGameResources.h"
 #include "SharedResources.h"
 
+#include "BehaviorTF.h"
+
 #include <limits>
 
 EnemyManager::EnemyManager()
@@ -258,6 +260,8 @@ void EnemyManager::handleSpawn() {
 			e->eb = new BehaviorAlly(e);
 		else
 			e->eb = new BehaviorStandard(e);
+
+		e->eb_tf = new BehaviorTF(e);
 
 		e->stats.hero_ally = espawn.hero_ally;
 		e->stats.enemy_ally = espawn.enemy_ally;
